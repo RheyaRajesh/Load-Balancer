@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Apr  3 11:44:19 2025
-
-@author: cslinux
-"""
-
 import socket
 import time
 import sys
