@@ -1,80 +1,42 @@
-# Load Balancer Project
+<div align="center">
 
-This project consists of two simple backend TCP servers and a Python-based load balancer that distributes client requests across the servers.
+# Traffix ⚖️🔀  
+## **Smart TCP Traffic Distributor**
 
-## 📁 Project Structure
+A lightweight, educational **TCP load balancer** written in pure Python.  
+Distributes incoming client connections across multiple backend servers using **Round Robin** (default) or **Random** selection — perfect for learning networking, sockets, and load balancing fundamentals.
 
-```
-backend_server1.py
-backend_server2.py
-loadbalancer.py
-README.md
-```
+</div>
 
----
+## ✨ Features
 
-## 🚀 Backend Servers
+- 🔄 **Round Robin** (default) & **Random** backend selection
+- 🔌 Bidirectional TCP proxying (client ↔ backend)
+- 📡 Uses non-blocking I/O with `select()` — efficient for many connections
+- 🗂️ Connection tracking (flow table) to keep sessions sticky
+- 📝 Clean logging: connections, bytes transferred, disconnections
+- ⚡ Super lightweight — no external dependencies!
 
-Each backend server listens on a specified port and returns a simple greeting message.
+## 🛠️ Tech Stack
 
-### Running Server 1
+- **Python 3.x** (standard library only)
+- `socket` + `select` for multiplexing
+- No frameworks — pure sockets magic!
 
-```
-python backend_server1.py 8888
-```
+## 🚀 Quick Start
 
-### Running Server 2
+### 1. Start the backend servers
 
-```
-python backend_server2.py 9999
-```
+Open two terminals:
 
-Both servers:
+  ```bash
+  # Backend 1
+  python backend_server1.py 8888
 
-* Accept TCP connections
-* Sleep for 1 second (simulating processing delay)
-* Send a message: `Hello from server on port <port>!`
+  # Backend 2
+  python backend_server2.py 9999
 
----
+  # Launch Traffix (the load balancer)
+  python loadbalancer.py
 
-## ⚖️ Load Balancer
-
-The load balancer listens on port **5555** and forwards client requests to backend servers using either:
-
-* **Random selection**, or
-* **Round Robin scheduling**
-
-The provided code uses **Round Robin** by default.
-
-### Features
-
-* Uses `select()` for handling multiple sockets
-* Maintains a **flow table** to map client sockets to backend server sockets
-* Forwards data in both directions
-* Logs connection, message transfer, and disconnection events
-
-### Running the Load Balancer
-
-```
-python loadbalancer.py
-```
-
-Then connect using `nc` (netcat), telnet, or a custom client:
-
-```
-nc localhost 5555
-```
-
-Each new connection is forwarded to the next backend server.
-
----
-
-## 🔄 Flow Summary
-
-1. Client connects to Load Balancer (LB)
-2. LB selects backend server (random/round-robin)
-3. LB creates server-side socket and connects to backend
-4. LB forwards data between client ↔ backend
-5. On disconnect, LB closes and removes sockets
-
----
+It listens on port 5555 by default.
